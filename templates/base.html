@@ -19,10 +19,7 @@
       rel="stylesheet"
       href="https://twilio-labs.github.io/function-templates/static/v1/ce-paste-theme.css"
     />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/19.2.16/css/intlTelInput.css"
-    />
+    <script src="{{ url_for('static', filename='webauthn.js') }}"></script>
     {% endblock %}
   </head>
   <body>
@@ -44,10 +41,17 @@
             </svg>
           </a>
         </div>
+        <div id="nav">
+          <a href="/register">Register</a>
+          <a href="/login">Login</a>
+          <a href="/passkeys">Passkeys</a>
+          <a href="/login-attempts">Login Attempts</a>
+        </div>
       </header>
     </div>
     <main>
       <div class="content">
+        <div id="client-flash"></div>
         {% with messages = get_flashed_messages(with_categories=true) %} {% for
         category, message in messages %}
         <div class="flash {{ category }}">{{ message }}</div>
@@ -57,6 +61,11 @@
     <footer>
       <span>We can't wait to see what you build.</span>
     </footer>
+    <script
+      type="module"
+      src="{{ url_for('static', filename='scripts.js') }}"
+    ></script>
   </body>
+
   {% block scripts %} {% endblock %}
 </html>

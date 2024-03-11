@@ -1,0 +1,28 @@
+{% extends "base.html" %} {% block content %}
+
+<table>
+  <tr>
+    <th>Factor SID</th>
+    <th>Identity</th>
+    <th>Status</th>
+    <th>Created At</th>
+    <!-- <th>Links</th> -->
+  </tr>
+  {% for factor in factors %}
+  <tr>
+    <td>{{factor['sid']}}</td>
+    <td>{{factor['entity_identity']}}</td>
+    <td>{{factor['status']}}</td>
+    <td>{{factor['date_created']}}</td>
+    <!-- <td>
+      <form action="{{url_for ('factor_delete') }}" method="POST">
+        <input type="hidden" id="sid" name="sid" value="{{ factor['sid'] }}" />
+        <input type="submit" value="Delete" />
+      </form> 
+    </td> -->
+  </tr>
+  {% endfor%}
+</table>
+{% endblock %} // {% block scripts %}
+<script type="module" src="/static/login.js"></script>
+{% endblock %}

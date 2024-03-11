@@ -1,5 +1,4 @@
 import os
-import random
 
 from dotenv import load_dotenv
 from twilio.rest import Client
@@ -8,19 +7,15 @@ from twilio.rest import Client
 load_dotenv()
 account_sid = os.environ['TWILIO_ACCOUNT_SID']
 auth_token = os.environ['TWILIO_AUTH_TOKEN']
-verification_sid = os.environ['VERIFY_SERVICE_SID']
+verify_sid = os.environ['VERIFY_SERVICE_SID']
 client = Client(account_sid, auth_token)
 
+
 def send(to):
-    token = random.randint(100000, 999999)
-    print(token)
-    verification = client.verify.v2.services(verification_sid).verifications.create(
-        to=to, channel='sms'
-    )
-    return verification.sid
+    verification = client.verify.services(verify_sid).verifications.create(to=to, channel='sms')
+    return verification.status
 
 
-def check(to, token):
-    check = client.verify.v2.services(verification_sid).verification_checks.create(to=to, code=token)
-    return check.status == 'approved'
-    
+def check(to, code):
+    verification_check = client.verify.services(verify_sid).verification_checks.create(to=to, code=code)
+    return verification_check.status == 'approved'

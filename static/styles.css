@@ -1,16 +1,28 @@
+header {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+#nav a {
+  flex: 1;
+  text-align: center;
+  text-decoration: none;
+  color: white;
+}
+
+#nav a:not(:last-child) {
+  padding-right: 1rem;
+  margin-right: 1rem;
+  border-right: 1px solid rgb(136, 145, 170);
+}
+
 main {
   padding-top: 40px;
   display: flex;
   flex-direction: column;
   flex: 1;
   justify-content: flex-start;
-  width: 100%;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-div.content {
-  max-width: 100%;
 }
 
 input,
@@ -28,6 +40,10 @@ select {
   margin-top: 14px;
 }
 
+#client-flash {
+  display: none;
+}
+
 .error {
   border-color: #f5c6cb;
   background-color: #f8d7da;
@@ -40,11 +56,9 @@ select {
   color: #155724;
 }
 
-.token-wrapper {
-  display: flex;
-}
-
-.token-wrapper input[type="submit"] {
-  margin-left: 8px;
-  margin-top: 0;
+#json-response {
+  display: none;
+  border: 1px solid gray;
+  border-radius: 6px;
+  padding: 1rem;
 }
