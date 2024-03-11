@@ -1,0 +1,36 @@
+{% extends "base.html" %} {% block content %}
+<section>
+  <form action="{{ url_for('start_verification')}}" method="post">
+    <p>Channel:</p>
+    <div>
+      <input type="radio" name="channel" value="sms" checked />
+      <label for="channel-sms">SMS</label>
+    </div>
+    <p>Enter your phone number:</p>
+    <div>
+      <input type="tel" name="phone_number" id="phone-number" />
+    </div>
+    <input type="submit" value="Get a one-time passcode" />
+  </form>
+</section>
+{% endblock %} {% block scripts %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/19.2.16/js/intlTelInput.min.js"></script>
+<script>
+  // Handle international prefixes, format phone input field
+  // Uses intl-tel-input library
+  const phoneInputField = document.querySelector("#phone-number");
+  const phoneInput = window.intlTelInput(phoneInputField, {
+    // https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2
+    preferredCountries: ["us"],
+    utilsScript:
+      "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/19.2.16/js/utils.js",
+  });
+
+  const form = document.querySelector("form");
+  form.addEventListener("submit", (event) => {
+    event.preventDefault();
+    phoneInputField.value = phoneInput.getNumber();
+    form.submit();
+  });
+</script>
+{% endblock %}

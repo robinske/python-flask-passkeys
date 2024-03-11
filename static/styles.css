@@ -1,0 +1,50 @@
+main {
+  padding-top: 40px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  justify-content: flex-start;
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+div.content {
+  max-width: 100%;
+}
+
+input,
+select {
+  font: inherit;
+  border: 1px solid rgb(136, 145, 170);
+  border-radius: 4px;
+  padding: 0.6rem;
+}
+
+.flash {
+  border: 1px solid;
+  border-radius: 4px;
+  padding: 0.6rem;
+  margin-top: 14px;
+}
+
+.error {
+  border-color: #f5c6cb;
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
+.success {
+  border-color: #c3e6cb;
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.token-wrapper {
+  display: flex;
+}
+
+.token-wrapper input[type="submit"] {
+  margin-left: 8px;
+  margin-top: 0;
+}

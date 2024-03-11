@@ -1,0 +1,49 @@
+{% extends "base.html" %} {% block content %}
+<form action="{{ url_for('check_verification')}}" method="post">
+  <p>Enter the token sent to your phone number:</p>
+  <div class="code-wrapper">
+    <input type="text" name="code" id="code" autocomplete="one-time-code" />
+    <input type="submit" value="Verify" />
+  </div>
+</form>
+{% endblock %} {% block scripts %}
+<script>
+  if ("OTPCredential" in window) {
+    window.addEventListener("DOMContentLoaded", (e) => {
+      console.log("WebOTP supported");
+      const input = document.querySelector(
+        'input[autocomplete="one-time-code"]'
+      );
+      if (!input) {
+        console.log("couldn't find an input with autocomplete=one-time-code");
+        return;
+      }
+      const ac = new AbortController();
+      const form = input.closest("form");
+      if (form) {
+        console.log("found the form");
+        form.addEventListener("submit", (e) => {
+          ac.abort();
+        });
+      } else {
+        console.log("couldn't find the form");
+      }
+      navigator.credentials
+        .get({
+          otp: { transport: ["sms"] },
+          signal: ac.signal,
+        })
+        .then((otp) => {
+          console.log("Got the code: ", otp.code);
+          input.value = otp.code;
+          if (form) form.submit();
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    });
+  } else {
+    console.log("WebOTP not supported");
+  }
+</script>
+{% endblock %}
