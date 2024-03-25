@@ -3,7 +3,7 @@ import {
   parseRequestOptionsFromJSON,
 } from "https://cdn.jsdelivr.net/npm/@github/webauthn-json/dist/esm/webauthn-json.browser-ponyfill.js";
 
-import { checkSupport, handleFormSubmit } from "./scripts.js";
+import { checkSupport, flash, handleFormSubmit } from "./scripts.js";
 
 checkSupport();
 

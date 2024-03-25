@@ -29,6 +29,10 @@ let handleFormSubmit = async (formType, passkeyFn) => {
         body: formData,
       });
 
+      if (!createResponse.ok) {
+        throw new Error("No passkey registered for username.");
+      }
+
       let publicKey = await createResponse.json();
       console.log(`[Server] Public Key: ${JSON.stringify(publicKey, null, 2)}`);
 
