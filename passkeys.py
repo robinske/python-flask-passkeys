@@ -9,16 +9,14 @@ load_dotenv()
 RELYING_PARTY_ID = os.environ['NGROK_URL']
 RELYING_PARTY_NAME = 'Acme Inc'
 VERIFY_SID = os.environ['VERIFY_SERVICE_SID']
-
-BASE_URL = 'https://preview-verify.twilio.com/v1'
+BASE_URL = os.environ['PREVIEW_API_BASE_URL']
 TWILIO_AUTH = (os.environ['TWILIO_ACCOUNT_SID'], os.environ['TWILIO_AUTH_TOKEN'])
 
 
 def list_factors():
-    url = f'https://preview-verify.twilio.com/v1/Services/{VERIFY_SID}/Factors'
+    url = f'{BASE_URL}/Services/{VERIFY_SID}/Factors'
     response = requests.get(url, auth=TWILIO_AUTH)
 
-    # factors = response.json()['factors']
     factors = sorted(
         filter(lambda x: x['status'] == 'verified', response.json()['factors']), 
         key=lambda y: y['date_created'], reverse=True)
@@ -59,15 +57,14 @@ def verify_factor(data):
     response = requests.post(url, auth=TWILIO_AUTH, json=data, headers={'Content-Type': 'application/json'})
     return response
 
-# TODO this is throwing a 500
 def delete_factor(factor_sid):
-    url = f'https://preview-verify.twilio.com/v1/Services/{VERIFY_SID}/Factors/{factor_sid}'
+    url = f'{BASE_URL}/Services/{VERIFY_SID}/Factors/{factor_sid}'
     response = requests.delete(url, auth=TWILIO_AUTH)
     return response.json()
 
 
 def get_challenges():
-    url = f'https://preview-verify.twilio.com/v1/Services/{VERIFY_SID}/Challenges'
+    url = f'{BASE_URL}/Services/{VERIFY_SID}/Challenges'
     response = requests.get(url, auth=TWILIO_AUTH)
 
     challenges = sorted(response.json()['challenges'], key=lambda y: y['date_created'], reverse=True)
@@ -75,7 +72,7 @@ def get_challenges():
     
 def create_challenge(identity, factor_sid):
     o = urlparse(RELYING_PARTY_ID)
-    url = f'https://preview-verify.twilio.com/v1/Services/{VERIFY_SID}/Challenges'
+    url = f'{BASE_URL}/Services/{VERIFY_SID}/Challenges'
     data = {
         "factor_sid": factor_sid,
         "entity": {
