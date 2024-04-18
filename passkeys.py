@@ -6,15 +6,15 @@ from urllib.parse import urlparse
 
 
 load_dotenv()
-RELYING_PARTY_ID = os.environ['NGROK_URL']
-RELYING_PARTY_NAME = 'Acme Inc'
-VERIFY_SID = os.environ['VERIFY_SERVICE_SID']
-BASE_URL = os.environ['PREVIEW_API_BASE_URL']
+RELYING_PARTY_ID = os.environ['RP_ID']
+RELYING_PARTY_NAME = os.environ['RP_NAME']
+
 TWILIO_AUTH = (os.environ['TWILIO_ACCOUNT_SID'], os.environ['TWILIO_AUTH_TOKEN'])
+BASE_URL = f'{os.environ["API_BASE_URL"]}/Services/{os.environ["VERIFY_SERVICE_SID"]}'
 
 
 def list_factors():
-    url = f'{BASE_URL}/Services/{VERIFY_SID}/Factors'
+    url = f'{BASE_URL}/Factors'
     response = requests.get(url, auth=TWILIO_AUTH)
 
     factors = sorted(
@@ -23,10 +23,9 @@ def list_factors():
 
     return factors
 
-
 def create_factor(username):
     o = urlparse(RELYING_PARTY_ID)
-    url = f'{BASE_URL}/Services/{VERIFY_SID}/Factors'
+    url = f'{BASE_URL}/Factors'
 
     data = {
         'friendly_name': f'{RELYING_PARTY_NAME} Passkey',
@@ -53,18 +52,17 @@ def create_factor(username):
     return response
     
 def verify_factor(data):
-    url = f'{BASE_URL}/Services/{VERIFY_SID}/Factors/Verify'
+    url = f'{BASE_URL}/Factors/Verify'
     response = requests.post(url, auth=TWILIO_AUTH, json=data, headers={'Content-Type': 'application/json'})
     return response
 
 def delete_factor(factor_sid):
-    url = f'{BASE_URL}/Services/{VERIFY_SID}/Factors/{factor_sid}'
+    url = f'{BASE_URL}/Factors/{factor_sid}'
     response = requests.delete(url, auth=TWILIO_AUTH)
     return response.json()
 
-
 def get_challenges():
-    url = f'{BASE_URL}/Services/{VERIFY_SID}/Challenges'
+    url = f'{BASE_URL}/Challenges'
     response = requests.get(url, auth=TWILIO_AUTH)
 
     challenges = sorted(response.json()['challenges'], key=lambda y: y['date_created'], reverse=True)
@@ -72,7 +70,7 @@ def get_challenges():
     
 def create_challenge(identity, factor_sid):
     o = urlparse(RELYING_PARTY_ID)
-    url = f'{BASE_URL}/Services/{VERIFY_SID}/Challenges'
+    url = f'{BASE_URL}/Challenges'
     data = {
         "factor_sid": factor_sid,
         "entity": {
@@ -88,6 +86,6 @@ def create_challenge(identity, factor_sid):
     return response
 
 def verify_challenge(data):
-    url = f'{BASE_URL}/Services/{VERIFY_SID}/Challenges/Verify'
+    url = f'{BASE_URL}/Challenges/Verify'
     response = requests.post(url, auth=TWILIO_AUTH, json=data, headers={'Content-Type': 'application/json'})
     return response

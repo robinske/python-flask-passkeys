@@ -1,8 +1,7 @@
 import { supported } from "https://cdn.jsdelivr.net/npm/@github/webauthn-json/dist/esm/webauthn-json.browser-ponyfill.js";
 
 let flash = (message, type) => {
-  let element = document.getElementById("client-flash");
-  element.className = "flash";
+  let element = document.getElementsById("flash-msg");
   element.classList.add(type);
   element.textContent = message;
   element.style.display = "block";
