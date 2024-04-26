@@ -83,6 +83,10 @@ form {
   flex-direction: column;
   justify-content: start;
   width: 60%;
+
+  @media (max-width: 768px) {
+    width: 100%;
+  }
 }
 
 input[type="text"] {
@@ -185,10 +189,19 @@ pre {
   width: 70%;
   margin-top: 0;
   margin-right: 2rem;
+
+  @media (max-width: 768px) {
+    width: 100%;
+    margin-right: 0;
+  }
 }
 
 aside {
   flex: 1;
+
+  @media (max-width: 768px) {
+    display: none;
+  }
 }
 
 .external-link {
