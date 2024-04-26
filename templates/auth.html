@@ -1,0 +1,35 @@
+{% extends "base.html" %} {% block content %} {% if submit == "login" %}
+<p>Log in with your username and passkey</p>
+{% else %}
+<p>Register a new passkey</p>
+{% endif %}
+<form id="auth" method="post">
+  <input 
+    type="text"
+    name="username"
+    id="username"
+    placeholder="username" 
+    {% if submit == "login" %} autocomplete="username webauthn" {% endif %}
+  />
+  {% if submit == "register" %}
+  <input type="password" name="password" id="password" placeholder="password" />
+  {% endif %}
+  <input type="submit" value="{{ submit | title }}" id="{{ submit }}" />
+</form>
+<div class="helper">
+  {% if submit == "login" %}
+  <p>Don't have an account? <a href="/register">Register</a></p>
+  {% else %}
+  <p>
+    Including password field to show that your user should be authenticated with
+    another method before registering a passkey.
+  </p>
+  <p>Password content is ignored for this demo.</p>
+  {% endif %}
+</div>
+{% endblock %} {% block scripts %}
+<script>
+  let username = "{{ session.get('username', null) }}";
+</script>
+<script type="module" src="/static/scripts.js"></script>
+{% endblock %}

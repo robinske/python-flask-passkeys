@@ -1,0 +1,27 @@
+{% extends "base.html" %} {% block content %}
+
+<h2>Passkey details</h2>
+<div class="container">
+  <pre>{{ factor | tojson_pretty }}</pre>
+  <aside>
+    <p>TODO - explanation of factor information, links to docs here.</p>
+    <a id="delete" href="#">Delete Passkey from server.</a>
+  </aside>
+</div>
+
+{%endblock%} {% block scripts %}
+<script>
+  document
+    .getElementById("delete")
+    .addEventListener("click", async function (e) {
+      e.preventDefault();
+
+      if (confirm("Are you sure you want to delete this passkey?")) {
+        let url = "{{ url_for('factor_delete', sid=factor['sid']) }}";
+        await fetch(url, { method: "DELETE" });
+      }
+
+      window.location.replace(`/passkeys`);
+    });
+</script>
+{% endblock %}

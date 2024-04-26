@@ -1,26 +1,49 @@
 {% extends "base.html" %} {% block content %}
-
+<h2>Passkeys for '{{session['username']}}'</h2>
+{% if not factors %}
+<span>No Passkeys found.</span>
+{% else %}
 <table>
   <tr>
-    <th>Factor SID</th>
-    <th>Identity</th>
+    <th>Passkey name</th>
+    <th>Username</th>
+    <th>[Verify API] Factor SID</th>
     <th>Status</th>
     <th>Created At</th>
-    <!-- <th>Links</th> -->
   </tr>
   {% for factor in factors %}
   <tr>
-    <td>{{factor['sid']}}</td>
+    <td>{{factor['friendly_name']}}</td>
     <td>{{factor['entity_identity']}}</td>
+    <td>
+      <code><a href="/passkeys/{{factor['sid']}}">{{factor['sid']}}</a></code>
+    </td>
     <td>{{factor['status']}}</td>
     <td>{{factor['date_created']}}</td>
-    <!-- <td>
-      <form action="{{url_for ('factor_delete') }}" method="POST">
-        <input type="hidden" id="sid" name="sid" value="{{ factor['sid'] }}" />
-        <input type="submit" value="Delete" />
-      </form> 
-    </td> -->
   </tr>
   {% endfor%}
 </table>
+{% endif %}
+
+<h2 style="margin-top: 4rem">Register a new passkey</h2>
+<p>You can register multiple passkeys with the same username.</p>
+<form id="auth" method="post">
+  <input
+    type="text"
+    name="username"
+    id="username"
+    value="{{session['username']}}"
+    disabled
+  />
+  <input type="submit" value="Register" id="register" />
+</form>
+<span class="helper"
+  ><a href="/logout">Log out</a> to register a passkey with a new username.
+</span>
+{% endblock %} {% block scripts %}
+<script
+  type="module"
+  src="https://cdn.jsdelivr.net/npm/@github/webauthn-json/dist/esm/webauthn-json.browser-ponyfill.js"
+></script>
+<script type="module" src="/static/scripts.js"></script>
 {% endblock %}

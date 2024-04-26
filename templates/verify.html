@@ -1,8 +1,0 @@
-{% extends "base.html" %} {% block content %} {% endblock %} {% block scripts %}
-<script type="module" src="/static/webauthn-ponyfill.js"></script>
-<script type="module" src="/static/register.js"></script>
-<script>
-  // prettier-ignore
-  let publicKey = JSON.parse('{{ public_key | tojson | safe }}');
-</script>
-{% endblock %}
