@@ -85,8 +85,9 @@ form.addEventListener("submit", async function (event) {
   try {
     event.preventDefault();
     let formType = event.submitter.id;
+    let username = document.getElementById("username").value;
     let route = router[formType];
-    let publicKey = await getPublicKey(route);
+    let publicKey = await getPublicKey(route, username);
 
     let credential;
     switch (formType) {
