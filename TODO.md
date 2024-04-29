@@ -1,2 +1,0 @@
-- Fix mobile view
-- add docs/details on passkey detail page
