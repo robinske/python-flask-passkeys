@@ -6,7 +6,7 @@
 <table>
   <tr>
     <th>Passkey name</th>
-    <th>Username</th>
+    <th>Authenticator</th>
     <th>[Verify API] Factor SID</th>
     <th>Status</th>
     <th>Created</th>
@@ -14,7 +14,7 @@
   {% for factor in factors %}
   <tr>
     <td>{{factor['friendly_name']}}</td>
-    <td>{{factor['entity_identity']}}</td>
+    <td>{{factor['authenticator_name']}}</td>
     <td>
       <code><a href="/passkeys/{{factor['sid']}}">{{factor['sid']}}</a></code>
     </td>
@@ -28,7 +28,7 @@
   {% for factor in factors %}
   <li>
     <a href="/passkeys/{{factor['sid']}}">{{factor['friendly_name']}}</a>
-    | {{factor['date_created'] }}
+    | {{factor['authenticator_name'] }}
   </li>
   {% endfor %}
 </ol>

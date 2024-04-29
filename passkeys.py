@@ -1,3 +1,4 @@
+import json
 import os
 import requests
 
@@ -22,26 +23,37 @@ def _post(path, data):
     url = f'{BASE_URL}/{path}'
     return requests.post(url, auth=TWILIO_AUTH, json=data, headers={'Content-Type': 'application/json'})
 
-def list_all_factors():
-    response = _get('Factors')
+def _authenticators():
+    with open('authenticators.json') as f:
+        return json.load(f)
+    
+def _authenticator_by_aaguid(authenticators, aaguid):
+    name = authenticators.get(aaguid, {}).get('name', 'Unknown Authenticator')
+    return name
 
-    factors = sorted(
-        filter(lambda x: x['status'] == 'verified', response.json()['factors']), 
-        key=lambda y: y['date_created'], reverse=True)
-
-    return factors
+# GET routes
+# Returns json
 
 def list_factors(username):
-    def format_date(date):
-        return 
-    
     response = _get(f'Factors?entity_identity={username}')
 
     factors = sorted(response.json()['factors'], key=lambda y: y['date_created'], reverse=True)
+    authenticators = _authenticators()
     for factor in factors:
+        factor['authenticator_name'] = _authenticator_by_aaguid(authenticators, factor['binding']['authenticator_metadata']['AAGUID'])
         factor['date_created'] = datetime.strptime(factor['date_created'], "%Y-%m-%dT%H:%M:%SZ").strftime('%Y-%m-%d')
 
     return factors
+
+def get_factor(factor_sid):
+    response = _get(f'Factors/{factor_sid}')
+    authenticators = _authenticators()
+    factor = response.json()
+    factor['authenticator_name'] = _authenticator_by_aaguid(authenticators, factor['binding']['authenticator_metadata']['AAGUID'])
+    return factor
+
+# POST routes
+# Returns (json, status_code)
 
 def create_factor(username, passkey_name):
     parsed = urlparse(RELYING_PARTY_ID)
@@ -62,24 +74,18 @@ def create_factor(username, passkey_name):
             },
             'authenticator_criteria': {
                 'authenticator_attachment': 'platform',
-                'discoverable_credentials': 'required', # TODO make this configurable
+                'discoverable_credentials': 'required',
                 'user_verification': 'preferred'
             }
         }
     }
 
     response = _post('Factors', data)
-    return response
+    return response.json().get('config', {}).get('creation_request'), response.status_code
     
-
-# TODO normalize what's being returned to data - e.g. response.json() over response
 def verify_factor(data):
     response = _post('Factors/Verify', data)
-    return response
-
-def get_factor(factor_sid):
-    response = _get(f'Factors/{factor_sid}')
-    return response.json()
+    return response.json(), response.status_code
     
 def create_challenge(identity=None):
     """Creates a new login challenge.
@@ -95,18 +101,20 @@ def create_challenge(identity=None):
         }
     }
    
-    # TODO - is there any benefit to passing in a Factor SID? 
     if identity:
         data['entity'] = { "identity": identity }
 
     response = _post('Challenges', data)
-    return response
+    return response.json().get('details', {}).get('publicKey'), response.status_code
 
 def verify_challenge(data):
     response = _post("Challenges/Verify", data)
-    return response
+    return response.json(), response.status_code
+
+# DELETE routes
+# Returns status_code
 
 def delete_factor(factor_sid):
     url = f'{BASE_URL}/Factors/{factor_sid}'
     response = requests.delete(url, auth=TWILIO_AUTH)
-    return response
+    return response.status_code

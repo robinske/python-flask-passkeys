@@ -4,8 +4,51 @@
 <div class="container">
   <pre>{{ factor | tojson_pretty }}</pre>
   <aside>
-    <p>TODO - explanation of factor information, links to docs here.</p>
-    <a id="delete" href="#">Delete Passkey from server.</a>
+    <p>
+      This shows the information stored server-side in the Verify Passkey API.
+    </p>
+    <p>Some notable fields include:</p>
+    <ul>
+      <li>
+        <strong><code>AAGUID</code></strong
+        >: The unique identifier of the authenticator. For this passkey, that
+        maps to <strong>{{factor['authenticator_name']}}</strong> (<a
+          href="https://github.com/passkeydeveloper/passkey-authenticator-aaguids"
+          >source</a
+        >).
+      </li>
+      <li>
+        <strong><code>discoverable_credentials</code></strong
+        >: Setting this to 'required' lets end users log in without typing in a
+        username, which can speed up authentication and improve UX. Try logging
+        out and clicking "login" in the nav to see this in action.
+        <a href="https://web.dev/articles/webauthn-discoverable-credentials"
+          >Learn more.</a
+        >
+      </li>
+      <li>
+        <strong><code>rp.id</code></strong
+        >: The business or website performing the authentication. Must match the
+        current domain in order to work. Helps prevent phishing attacks.
+      </li>
+      <li>
+        <strong><code>status</code></strong
+        >: The verified status of the passkey on the server. Helps ensure
+        successful registration before using passkeys for ongoing
+        authentication.
+      </li>
+    </ul>
+    <p>
+      For more information,
+      <a href="https://www.twilio.com/docs/verify/passkeys"
+        >check out the documentation.</a
+      >
+      or our
+      <a href="https://www.twilio.com/en-us/blog/passkeys-101"
+        >Passkeys 101 primer.</a
+      >
+    </p>
+    <button id="delete">Delete Passkey from server.</button>
   </aside>
 </div>
 <a href="/passkeys"><< Back to passkeys</a>

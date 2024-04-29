@@ -197,6 +197,17 @@ tr:hover {
   display: flex;
 }
 
+#delete {
+  width: 100%;
+  padding: 0.5rem;
+
+  background-color: #f8d7da;
+  border: 1px solid #c07971;
+  border-radius: 4px;
+  color: #721c24;
+  cursor: pointer;
+}
+
 pre {
   border: 1px solid #d3d3d3;
   background-color: #f0f0f0;

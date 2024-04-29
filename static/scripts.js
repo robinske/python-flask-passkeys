@@ -65,7 +65,7 @@ let verifyCredential = async function (credential, route) {
 
   let verifyResponseJson = await verifyResponse.json();
 
-  // TODO the redirect happens too fast to see this - display on next page instead?
+  // TODO the redirect happens too fast to see this
   let jsonStr = JSON.stringify(verifyResponseJson, null, 2);
   console.log(`[Server] Verify Response: ${jsonStr}`);
 
@@ -122,19 +122,21 @@ let autoLogin = async function () {
   }
 };
 
-// TODO - do condintional mediation
+// TODO - do conditional mediation
 // https://web.dev/articles/passkey-form-autofill
 // if (window.location.pathname === "/login") {
 //   autoLogin();
 // }
 
 let loginLink = document.getElementById("login");
-loginLink.addEventListener("click", function (event) {
-  event.preventDefault();
+if (loginLink) {
+  loginLink.addEventListener("click", function (event) {
+    event.preventDefault();
 
-  try {
-    autoLogin();
-  } catch (error) {
-    window.location.replace("/login");
-  }
-});
+    try {
+      autoLogin();
+    } catch (error) {
+      window.location.replace("/login");
+    }
+  });
+}
