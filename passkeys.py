@@ -36,11 +36,16 @@ def _authenticator_by_aaguid(authenticators, aaguid):
 
 def list_factors(username):
     response = _get(f'Factors?entity_identity={username}')
+    authenticators = _authenticators()
 
     factors = sorted(response.json()['factors'], key=lambda y: y['date_created'], reverse=True)
-    authenticators = _authenticators()
     for factor in factors:
-        factor['authenticator_name'] = _authenticator_by_aaguid(authenticators, factor['binding']['authenticator_metadata']['AAGUID'])
+        if factor.get('status') == 'verified':
+            aaguid = factor.get('binding', {}).get('authenticator_metadata', {}).get('AAGUID')
+            factor['authenticator_name'] = _authenticator_by_aaguid(authenticators, aaguid)
+        else:
+            factor['authenticator_name'] = 'N/A'
+
         factor['date_created'] = datetime.strptime(factor['date_created'], "%Y-%m-%dT%H:%M:%SZ").strftime('%Y-%m-%d')
 
     return factors
@@ -49,7 +54,11 @@ def get_factor(factor_sid):
     response = _get(f'Factors/{factor_sid}')
     authenticators = _authenticators()
     factor = response.json()
-    factor['authenticator_name'] = _authenticator_by_aaguid(authenticators, factor['binding']['authenticator_metadata']['AAGUID'])
+    if factor.get('status') == 'verified':
+        aaguid = factor.get('binding', {}).get('authenticator_metadata', {}).get('AAGUID')
+        factor['authenticator_name'] = _authenticator_by_aaguid(authenticators, aaguid)
+    else:
+        factor['authenticator_name'] = 'N/A'
     return factor
 
 # POST routes
