@@ -161,9 +161,21 @@ select {
   color: #0c5460;
 }
 
+.mobile-list {
+  display: none;
+
+  @media (max-width: 768px) {
+    display: block;
+  }
+}
+
 table {
   border-collapse: collapse;
   width: 100%;
+
+  @media (max-width: 768px) {
+    display: none;
+  }
 }
 
 th,

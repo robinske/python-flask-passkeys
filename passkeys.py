@@ -2,6 +2,7 @@ import os
 import requests
 
 from dotenv import load_dotenv
+from datetime import datetime
 from urllib.parse import urlparse
 
 
@@ -31,11 +32,14 @@ def list_all_factors():
     return factors
 
 def list_factors(username):
+    def format_date(date):
+        return 
+    
     response = _get(f'Factors?entity_identity={username}')
 
-    factors = sorted(
-        filter(lambda x: x['status'] == 'verified', response.json()['factors']), 
-        key=lambda y: y['date_created'], reverse=True)
+    factors = sorted(response.json()['factors'], key=lambda y: y['date_created'], reverse=True)
+    for factor in factors:
+        factor['date_created'] = datetime.strptime(factor['date_created'], "%Y-%m-%dT%H:%M:%SZ").strftime('%Y-%m-%d')
 
     return factors
 

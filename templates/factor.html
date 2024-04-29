@@ -20,9 +20,8 @@
       if (confirm("Are you sure you want to delete this passkey?")) {
         let url = "{{ url_for('factor_delete', sid=factor['sid']) }}";
         await fetch(url, { method: "DELETE" });
+        window.location.replace(`/passkeys`);
       }
-
-      window.location.replace(`/passkeys`);
     });
 </script>
 {% endblock %}

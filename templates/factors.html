@@ -23,6 +23,15 @@
   </tr>
   {% endfor%}
 </table>
+<!-- simplified view for mobile -->
+<ol class="mobile-list">
+  {% for factor in factors %}
+  <li>
+    <a href="/passkeys/{{factor['sid']}}">{{factor['friendly_name']}}</a>
+    | {{factor['date_created'] }}
+  </li>
+  {% endfor %}
+</ol>
 {% endif %}
 
 <h2 style="margin-top: 4rem">Register a new passkey</h2>

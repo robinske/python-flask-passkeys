@@ -124,9 +124,9 @@ let autoLogin = async function () {
 
 // TODO - do condintional mediation
 // https://web.dev/articles/passkey-form-autofill
-if (window.location.pathname === "/login") {
-  autoLogin();
-}
+// if (window.location.pathname === "/login") {
+//   autoLogin();
+// }
 
 let loginLink = document.getElementById("login");
 loginLink.addEventListener("click", function (event) {
