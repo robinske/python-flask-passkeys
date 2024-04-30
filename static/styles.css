@@ -40,8 +40,6 @@ header {
 
 #twilio-logo > a {
   display: flex;
-  width: 30px;
-  height: auto;
   padding-top: 0.75rem;
   padding-bottom: 0.75rem;
   padding-right: 1rem;
