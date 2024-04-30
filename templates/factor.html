@@ -1,7 +1,7 @@
 {% extends "base.html" %} {% block content %}
 
 <h2>Passkey details</h2>
-<div class="container">
+<div class="detail">
   <pre>{{ factor | tojson_pretty }}</pre>
   <aside>
     <p>
@@ -41,7 +41,7 @@
     <p>
       For more information,
       <a href="https://www.twilio.com/docs/verify/passkeys"
-        >check out the documentation.</a
+        >check out the documentation</a
       >
       or our
       <a href="https://www.twilio.com/en-us/blog/passkeys-101"

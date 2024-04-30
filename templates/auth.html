@@ -4,14 +4,9 @@
 <p>Register a new passkey</p>
 {% endif %}
 <form id="auth" method="post">
-  <input 
-    type="text"
-    name="username"
-    id="username"
-    placeholder="username" 
-    {% if submit == "login" %} autocomplete="username webauthn" {% endif %}
-  />
-  {% if submit == "register" %}
+  <input type="text" name="username" id="username" placeholder="username" {% if
+  submit == "login" %} autocomplete="username webauthn" {% endif %} /> {% if
+  submit == "register" %}
   <input type="password" name="password" id="password" placeholder="password" />
   {% endif %}
   <input type="submit" value="{{ submit | title }}" id="{{ submit }}" />
@@ -24,7 +19,10 @@
     Including password field to show that your user should be authenticated with
     another method before registering a passkey.
   </p>
-  <p>Password content is ignored for this demo.</p>
+  <p>
+    Password content is completely ignored for this demo.
+    <a href="https://www.twilio.com/en-us/privacy">Privacy policy.</a>
+  </p>
   {% endif %}
 </div>
 {% endblock %} {% block scripts %}

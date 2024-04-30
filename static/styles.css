@@ -13,40 +13,52 @@ body {
 }
 
 header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  align-content: center;
   color: white;
   background: rgb(6, 3, 58);
   width: 100%;
   box-shadow: 0px 2px 6px 0px rgba(75, 86, 113, 0.2);
 }
 
-#twilio-logo {
+.container {
+  width: 85%;
+  margin: 0 auto;
   display: flex;
   align-items: center;
+  justify-content: space-between;
+  align-content: center;
+}
+
+#twilio-logo,
+.built-by {
+  display: flex;
+  align-items: center;
+}
+
+.detail {
+  display: flex;
 }
 
 #twilio-logo > a {
-  display: block;
-  width: 50px;
-  height: 50px;
-  padding-left: 1.5rem;
-  padding-right: 1.5rem;
+  display: flex;
+  width: 30px;
+  height: auto;
+  padding-top: 0.75rem;
+  padding-bottom: 0.75rem;
+  padding-right: 1rem;
   fill: white;
 
   @media (max-width: 768px) {
-    padding-left: 1rem;
-    padding-right: 0.5rem;
+    padding-right: 1rem;
   }
 }
 
-header > nav {
+nav {
   display: flex;
   justify-content: space-around;
   align-items: center;
-  padding: 0.75rem 2rem;
+  padding-top: 0.75rem;
+  padding-bottom: 0.75rem;
+  padding-left: 1.5rem;
   border-left: 1px solid rgba(255, 255, 255, 0.2);
 
   @media (max-width: 768px) {
@@ -54,14 +66,14 @@ header > nav {
   }
 }
 
-header > nav a {
+nav a {
   flex: 1;
   text-align: center;
   text-decoration: none;
   color: white;
-  margin: 0 1rem;
   display: flex;
   align-items: center;
+  margin-left: 2rem;
 }
 
 main {
@@ -75,12 +87,48 @@ main {
 
 footer {
   display: flex;
-  justify-content: center;
+  flex-direction: column;
   color: #94979b;
   background: rgb(6, 3, 58);
   box-shadow: 0px 2px 6px 0px rgba(75, 86, 113, 0.2);
-  padding: 50px 0;
+  padding-top: 3rem;
+  padding-bottom: 3rem;
   margin-top: auto;
+}
+
+footer .container {
+  align-items: flex-start;
+
+  @media (max-width: 768px) {
+    display: none;
+  }
+}
+
+.built-by span {
+  margin-right: 0.5rem;
+}
+
+footer > span {
+  text-align: center;
+  font-style: italic;
+  margin-bottom: 3rem;
+  font-size: x-large;
+  font-weight: 200;
+
+  @media (max-width: 768px) {
+    font-size: inherit;
+  }
+}
+
+.links {
+  display: flex;
+  flex-direction: row;
+}
+
+.links a {
+  text-decoration: none;
+  color: #94979b;
+  margin-right: 1.5rem;
 }
 
 form {
@@ -193,10 +241,6 @@ tr:hover {
   background-color: #f5f5f5;
 }
 
-.container {
-  display: flex;
-}
-
 #delete {
   width: 100%;
   padding: 0.5rem;
@@ -237,4 +281,9 @@ aside {
   height: 20px;
   filter: invert(100%);
   margin-right: 0.2rem;
+}
+
+.devs-logo {
+  height: 20px;
+  width: auto;
 }
