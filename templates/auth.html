@@ -1,7 +1,10 @@
 {% extends "base.html" %} {% block content %} {% if submit == "login" %}
 <p>Log in with your username and passkey</p>
 {% else %}
-<p>Register a new passkey</p>
+<h2>Register a new passkey</h2>
+<p>
+  Welcome! This is a demo application. Choose any username to create a passkey.
+</p>
 {% endif %}
 <form id="auth" method="post">
   <input type="text" name="username" id="username" placeholder="username" {% if
@@ -16,12 +19,12 @@
   <p>Don't have an account? <a href="/register">Register</a></p>
   {% else %}
   <p>
-    Including password field to show that your user should be authenticated with
-    another method before registering a passkey.
+    In a real application, your user should be authenticated with another method
+    before registering a passkey. The password field mocks that behavior here.
   </p>
   <p>
     Password content is completely ignored for this demo.
-    <a href="https://www.twilio.com/en-us/privacy">Privacy policy.</a>
+    <a href="https://www.twilio.com/legal/privacy">Privacy policy.</a>
   </p>
   {% endif %}
 </div>

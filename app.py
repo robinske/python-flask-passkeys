@@ -62,21 +62,28 @@ def login():
 
 @app.route('/logout')
 def logout():
-    session['logged_in'] = False
+    session.clear()
     return redirect(url_for('index'))
 
 # API routes
 @app.route('/factors/create', methods=['POST'])
 def factor_create():
     username = request.form['username']
+    session_username = session.get('username')
     ua_platform = platform(request.user_agent.string)
 
-    public_key, status_code = create_factor(username, ua_platform)
-    if status_code == 201:
-        session['username'] = username
-        return jsonify(public_key), status_code
+    if not session.get('logged_in') and list_factors(username):
+        return jsonify({
+            'message': 'This username is taken. Log in or choose a different username.'
+        }), 400
+    elif session_username and session_username != username:
+        return jsonify({'message': 'Log out to register with a new username.'}), 400
     else:
-        return jsonify({'Error creating passkey on the server.'}), 400
+        public_key, status_code = create_factor(username, ua_platform)
+        if status_code == 201:
+            return jsonify(public_key), status_code
+        else:
+            return jsonify({'Error creating passkey on the server.'}), 400
 
 @app.route('/factors/verify', methods=['POST'])
 def factor_verify():
@@ -84,6 +91,8 @@ def factor_verify():
     response, status_code = verify_factor(credential)
 
     if response.get('status') == 'verified':
+        print(response.get('entity_identity'))
+        session['username'] = response.get('entity_identity')
         session['logged_in'] = True
 
     return jsonify(response), status_code
@@ -95,7 +104,7 @@ def challenge_create():
     if status_code == 201:
         return jsonify(public_key), 201
     else:
-        return jsonify({'message': 'Error creating authentication challenge on the server.'}), 400
+        return jsonify({'message': 'Invalid username.'}), 400
 
 @app.route('/challenges/verify', methods=['POST'])
 def challenge_verify():

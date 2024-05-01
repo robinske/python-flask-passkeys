@@ -111,14 +111,14 @@ form.addEventListener("submit", async function (event) {
 // auto detect login and prompt for passkey
 // https://web.dev/articles/webauthn-discoverable-credentials
 let autoLogin = async function () {
+  let route = router["login"];
+  let publicKey = await getPublicKey(route);
+
   try {
-    let route = router["login"];
-    let publicKey = await getPublicKey(route);
     let credential = await get(parseRequestOptionsFromJSON({ publicKey }));
-    await verifyCredential(credential, route);
+    verifyCredential(credential, route);
   } catch (error) {
-    console.error(`[Error] ${error.message}`);
-    flash(error.message, "error");
+    window.location.replace("/login");
   }
 };
 
@@ -132,11 +132,6 @@ let loginLink = document.getElementById("login");
 if (loginLink) {
   loginLink.addEventListener("click", function (event) {
     event.preventDefault();
-
-    try {
-      autoLogin();
-    } catch (error) {
-      window.location.replace("/login");
-    }
+    autoLogin();
   });
 }
